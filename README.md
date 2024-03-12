@@ -25,6 +25,10 @@ reproducible. You can see the results below.
 
 ![evidences](https://github.com/htjb/nle-evidence/blob/main/evidence-comparison.png?raw=true)
 
+Testing NLE stability by retraining on same training data 10 times...
+
+![NLE stability](https://github.com/htjb/nle-evidence/blob/main/nle-stability.png?raw=true)
+
 ### To run the code
 
 Run in the following order:
