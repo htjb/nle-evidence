@@ -7,7 +7,7 @@ $D = \theta^{-1.5} + x$
 
 where $x \sim \mathcal{N}(0, 0.05)$ and my true data is generated with $\theta=2.5$.
 
-![plot of data](https://github.com/htjb/nle-evidence/blob/main/data.png?raw=true)
+![plot of data](https://github.com/htjb/nle-evidence/blob/data_norm/data.png?raw=true)
 
 I generate a set of simulated data from a Uniform prior on $\theta$ between 1 and 10 to train my NLE. The NLE is built with the
 [sbi](https://github.com/sbi-dev/sbi) package. In the main branch I have turned data normalisation and parameter normalisation off
