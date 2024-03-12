@@ -11,7 +11,6 @@ from sbi.inference import SNLE
 from sbi.utils.get_nn_models import likelihood_nn
 from sbi import utils
 
-density_estimator = pickle.load(open('density_estimator.pkl', 'rb'))
 true_data = np.loadtxt('true_data.txt').reshape(1, 1).astype(np.float32)
 data_mean = np.loadtxt('data_mean.txt').reshape(1, 1).astype(np.float32)
 data_std = np.loadtxt('data_std.txt').reshape(1, 1).astype(np.float32)
@@ -25,12 +24,6 @@ def prior(cube):
     theta[0] = UniformPrior(1, 10)(cube[0])
     return theta
 
-def likelihood(theta):
-    return (density_estimator.log_prob(torch.tensor(norm_true_data),
-                    torch.tensor([theta.astype(np.float32)])).detach().numpy() \
-                + correction).astype(np.float64)[0], []
-
-print(likelihood(prior([0.5])))
 nDims = 1
 
 np.random.seed(0)
@@ -60,6 +53,11 @@ for i in range(10):
     inference = SNLE(prior=torch_prior, density_estimator=density_estimator_build_fun)
     inference = inference.append_simulations(prior_sample, norm_data)
     density_estimator = inference.train()
+
+    def likelihood(theta):
+        return (density_estimator.log_prob(torch.tensor(norm_true_data),
+                        torch.tensor([theta.astype(np.float32)])).detach().numpy() \
+                    + correction).astype(np.float64)[0], []
 
     settings = PolyChordSettings(nDims, 0) #settings is an object
     settings.read_resume = False
