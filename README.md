@@ -17,9 +17,9 @@ $L(D|\theta) = L(\tilde{D}|\theta) |\frac{d \tilde{D}}{d D}|$
 
 My likelihood function is gaussian since the noise in the data is gaussian and I can define this with scipy.stats. 
 I can analytically calcualte the evidence with scipy.integrate.quad, sample over scipy.stats.norm with
-Polychord and sample over the NLE with polychord too.
+[Polychord](https://github.com/PolyChord/PolyChordLite) and sample over the NLE with Polychord too.
 
-I use [anesthetic]() to get $\log Z$ from the Nested Sampling runs and plot the distributions to compare with the
+I use [anesthetic](https://anesthetic.readthedocs.io/en/latest/) to get $\log Z$ from the Nested Sampling runs and plot the distributions to compare with the
 `quad` integration. I run the sampling over the NLE and `scipy.stats.norm` twice to check that they are
 reproducible. You can see the results below.
 

@@ -15,6 +15,8 @@ for i in range(2):
 true_logZ = np.loadtxt('raw-integration-evidence.txt')
 
 plt.axvline(true_logZ, color='k', label='True')
+plt.xlabel('log(Z)')
+plt.ylabel('Frequency')
 plt.legend()
 plt.savefig('evidence-comparison.png')
 plt.show()
