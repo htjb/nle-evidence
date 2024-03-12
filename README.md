@@ -1,5 +1,7 @@
 ## Testing Evidences from NLEs
 
+In this branch I added data normalisation to see if I could correct for it properly.
+
 I wrote a simple example with one parameter and one data point to demonstrate that we can recover a good estimate of the Bayesian 
 Evidence by sampling over a neural likelihood estimator (NLE). My data is modelled according to
 
@@ -10,8 +12,8 @@ where $x \sim \mathcal{N}(0, 0.05)$ and my true data is generated with $\theta=2
 ![plot of data](https://github.com/htjb/nle-evidence/blob/data_norm/data.png?raw=true)
 
 I generate a set of simulated data from a Uniform prior on $\theta$ between 1 and 10 to train my NLE. The NLE is built with the
-[sbi](https://github.com/sbi-dev/sbi) package. In the main branch I have turned data normalisation and parameter normalisation off
-so that I don't have to worry about additional Jacobian factors e.g.
+[sbi](https://github.com/sbi-dev/sbi) package. In this branch I have to worry about additional Jacobian factors from the data normalisation
+when sampling over the NLE e.g.
 
 $L(D|\theta) = L(\tilde{D}|\theta) |\frac{d \tilde{D}}{d D}|$
 
@@ -23,7 +25,9 @@ I use [anesthetic](https://anesthetic.readthedocs.io/en/latest/) to get $\log Z$
 `quad` integration. I run the sampling over the NLE and `scipy.stats.norm` twice to check that they are
 reproducible. You can see the results below.
 
-![evidences](https://github.com/htjb/nle-evidence/blob/main/evidence-comparison.png?raw=true)
+My baselines are all computed in the real space.
+
+![evidences](https://github.com/htjb/nle-evidence/blob/data_norm/evidence-comparison.png?raw=true)
 
 ### To run the code
 
