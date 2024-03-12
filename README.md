@@ -26,11 +26,16 @@ I can analytically calcualte the evidence with scipy.integrate.quad, sample over
 
 I use [anesthetic](https://anesthetic.readthedocs.io/en/latest/) to get $\log Z$ from the Nested Sampling runs and plot the distributions to compare with the
 `quad` integration. I run the sampling over the NLE and `scipy.stats.norm` twice to check that they are
-reproducible. You can see the results below.
+reproducible for the same density estimator (see below). You can see the results below.
 
 My baselines are all computed in the real space.
 
 ![evidences](https://github.com/htjb/nle-evidence/blob/data_param_norm/evidence-comparison.png?raw=true)
+
+I also tested the stability of the NLE. To do this I trained the NLE on the same training data
+10 times and sampled it each time to get an estimate of the evidence. The results are shown below.
+
+![stability](https://github.com/htjb/nle-evidence/blob/data_param_norm/nle-stability.png?raw=true)
 
 ### To run the code
 
