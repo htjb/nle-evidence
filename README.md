@@ -1,6 +1,6 @@
 ## Testing Evidences from NLEs
 
-In this branch I added data normalisation to see if I could correct for it properly.
+In this branch I added data and parameter normalisation to see if I could correct for it properly.
 
 I wrote a simple example with one parameter and one data point to demonstrate that we can recover a good estimate of the Bayesian 
 Evidence by sampling over a neural likelihood estimator (NLE). My data is modelled according to
@@ -9,13 +9,16 @@ $D = \theta^{-1.5} + x$
 
 where $x \sim \mathcal{N}(0, 0.05)$ and my true data is generated with $\theta=2.5$.
 
-![plot of data](https://github.com/htjb/nle-evidence/blob/data_norm/data.png?raw=true)
+![plot of data](https://github.com/htjb/nle-evidence/blob/data_param_norm/data.png?raw=true)
 
 I generate a set of simulated data from a Uniform prior on $\theta$ between 1 and 10 to train my NLE. The NLE is built with the
 [sbi](https://github.com/sbi-dev/sbi) package. In this branch I have to worry about additional Jacobian factors from the data normalisation
 when sampling over the NLE e.g.
 
-$L(D|\theta) = L(\tilde{D}|\theta) |\frac{d \tilde{D}}{d D}|$
+$L(D|\tilde{\theta}) = L(\tilde{D}|\tilde{\theta}) |\frac{d \tilde{D}}{d D}|$
+
+Because the likelihood is conditional on the parameters I dont think I need to correct for this normalisation. I
+am using built in normalisation from the SBI package to normalise the parameters. It just uses standardisation.
 
 My likelihood function is gaussian since the noise in the data is gaussian and I can define this with scipy.stats. 
 I can analytically calcualte the evidence with scipy.integrate.quad, sample over scipy.stats.norm with
@@ -27,7 +30,7 @@ reproducible. You can see the results below.
 
 My baselines are all computed in the real space.
 
-![evidences](https://github.com/htjb/nle-evidence/blob/data_norm/evidence-comparison.png?raw=true)
+![evidences](https://github.com/htjb/nle-evidence/blob/data_param_norm/evidence-comparison.png?raw=true)
 
 ### To run the code
 
