@@ -7,6 +7,9 @@ from anesthetic import read_chains
 import matplotlib.pyplot as plt
 import pickle
 import mpi4py
+from sbi.inference import SNLE
+from sbi.utils.get_nn_models import likelihood_nn
+from sbi import utils
 
 density_estimator = pickle.load(open('density_estimator.pkl', 'rb'))
 true_data = np.loadtxt('true_data.txt').reshape(1, 1).astype(np.float32)
@@ -30,7 +33,36 @@ def likelihood(theta):
 print(likelihood(prior([0.5])))
 nDims = 1
 
+np.random.seed(0)
+torch.manual_seed(0)
+
+def simulation(theta):
+    return theta**(-1.5) + torch.normal(0, 0.05, size=theta.shape)
+
+torch_prior = utils.BoxUniform(low=torch.tensor([1]),
+                            high=torch.tensor([10]))
+
+prior_sample = torch_prior.sample((1000,))
+
+data = simulation(prior_sample)
+data_mean = data.mean()
+data_std = data.std()
+norm_data = (data - data_mean) / data_std
+
 for i in range(10):
+
+    density_estimator_build_fun = likelihood_nn(
+        model="maf", hidden_features=50,  
+        num_transforms=2, z_score_x=None, z_score_theta='independent',
+        use_batch_norm=True,
+        )
+
+    inference = SNLE(prior=torch_prior, density_estimator=density_estimator_build_fun)
+    inference = inference.append_simulations(prior_sample, norm_data)
+    density_estimator = inference.train()
+
+    with open('density_estimator.pkl', 'wb') as f:
+        pickle.dump(density_estimator, f)
     settings = PolyChordSettings(nDims, 0) #settings is an object
     settings.read_resume = False
     settings.base_dir =  'testing-nle_stability_' + str(i) + '/'
