@@ -61,8 +61,6 @@ for i in range(10):
     inference = inference.append_simulations(prior_sample, norm_data)
     density_estimator = inference.train()
 
-    with open('density_estimator.pkl', 'wb') as f:
-        pickle.dump(density_estimator, f)
     settings = PolyChordSettings(nDims, 0) #settings is an object
     settings.read_resume = False
     settings.base_dir =  'testing-nle_stability_' + str(i) + '/'
